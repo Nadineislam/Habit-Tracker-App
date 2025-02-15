@@ -58,10 +58,11 @@ dependencies {
     implementation(libs.hilt.navigation)
 
     // Navigation
-    implementation("androidx.navigation:navigation-runtime-ktx:2.8.7")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.8.7")
-    implementation("androidx.navigation:navigation-ui-ktx:2.8.7")
-//
+    implementation(libs.navigation.runtime.ktx)
+    implementation(libs.navigation.fragment.ktx)
+    implementation(libs.navigation.ui.ktx)
+
+
     implementation (libs.core.common)
     implementation (libs.core.runtime)
 
@@ -71,8 +72,8 @@ dependencies {
     annotationProcessor (libs.room.compiler)
     kapt (libs.room.compiler)
 
-    kapt ("android.arch.persistence.room:compiler:1.1.1")
-    kaptAndroidTest ("androidx.room:room-compiler:2.6.1")
+    kapt(libs.room.compiler.legacy)
+    kaptAndroidTest(libs.room.compiler.androidTest)
 
     // RxJava + RxAndroid support for Room
     implementation (libs.rxandroid)
@@ -80,12 +81,9 @@ dependencies {
 
     // Test helpers
     testImplementation (libs.room.testing)
+    testImplementation(libs.core.testing)
 
     testImplementation ("androidx.arch.core:core-testing:2.2.0")
-
-
-
-
 
 
 }
