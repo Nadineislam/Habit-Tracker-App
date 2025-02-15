@@ -1,10 +1,8 @@
-package com.example.habittrackerapp.data.db;
+package com.example.habittrackerapp.data.db.habit;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-import androidx.room.TypeConverter;
-import androidx.room.TypeConverters;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -46,6 +44,7 @@ public class HabitEntity {
         try {
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
             Date parsedDate = format.parse(date.trim());
+            assert parsedDate != null;
             return format.format(parsedDate);
         } catch (Exception e) {
             e.printStackTrace();
