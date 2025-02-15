@@ -29,7 +29,9 @@ public class EditHabitViewModel extends ViewModel {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {
-                }, throwable -> {})
+                }, throwable -> {
+
+                })
         );
     }
 

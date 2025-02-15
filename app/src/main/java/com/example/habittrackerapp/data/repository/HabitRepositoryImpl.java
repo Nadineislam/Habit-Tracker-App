@@ -4,8 +4,6 @@ import androidx.lifecycle.LiveData;
 
 import com.example.habittrackerapp.data.db.habit.HabitDao;
 import com.example.habittrackerapp.data.db.habit.HabitEntity;
-import com.example.habittrackerapp.data.db.habitStreak.HabitStreakDao;
-import com.example.habittrackerapp.data.db.habitStreak.HabitStreakEntity;
 import com.example.habittrackerapp.domain.repository.HabitRepository;
 
 import java.util.List;
@@ -17,12 +15,9 @@ import io.reactivex.Single;
 
 public class HabitRepositoryImpl implements HabitRepository {
     private final HabitDao habitDao;
-    private final HabitStreakDao habitStreakDao;
-
     @Inject
-    public HabitRepositoryImpl(HabitDao habitDao, HabitStreakDao habitStreakDao) {
+    public HabitRepositoryImpl(HabitDao habitDao) {
         this.habitDao = habitDao;
-        this.habitStreakDao = habitStreakDao;
     }
 
     @Override
@@ -39,11 +34,6 @@ public class HabitRepositoryImpl implements HabitRepository {
     @Override
     public Single<Long> insertHabit(HabitEntity habit) {
         return habitDao.insertHabit(habit);
-    }
-
-    @Override
-    public Single<Long> insertHabitStreak(HabitStreakEntity habitStreak) {
-        return habitStreakDao.insertHabitStreak(habitStreak);
     }
 
     @Override

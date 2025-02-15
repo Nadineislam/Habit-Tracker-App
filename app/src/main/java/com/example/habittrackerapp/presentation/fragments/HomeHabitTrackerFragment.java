@@ -1,5 +1,7 @@
 package com.example.habittrackerapp.presentation.fragments;
 
+import static com.example.habittrackerapp.core.Utils.getCurrentDate;
+
 import android.app.AlertDialog;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -13,22 +15,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 import com.example.habittrackerapp.R;
+import com.example.habittrackerapp.core.Utils;
 import com.example.habittrackerapp.databinding.DialogCalendarBinding;
 import com.example.habittrackerapp.databinding.FragmentHomeHabitTrackerBinding;
 import com.example.habittrackerapp.presentation.adapter.HabitTrackerAdapter;
+import com.example.habittrackerapp.presentation.listeners.OnHabitSwipeListener;
 import com.example.habittrackerapp.presentation.viewmodel.HomeHabitTrackerViewModel;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import com.example.habittrackerapp.core.OnDateSelectedListener;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class HomeHabitTrackerFragment extends Fragment implements HabitTrackerAdapter.OnHabitSwipeListener {
+public class HomeHabitTrackerFragment extends Fragment implements OnHabitSwipeListener {
     private FragmentHomeHabitTrackerBinding binding;
     private HomeHabitTrackerViewModel habitViewModel;
     private HabitTrackerAdapter habitAdapter;
-    private int position;
-    private int newProgress;
 
     @Nullable
     @Override
@@ -53,17 +56,28 @@ public class HomeHabitTrackerFragment extends Fragment implements HabitTrackerAd
     }
 
     private void setUpRecyclerView() {
-        habitAdapter = new HabitTrackerAdapter();
+        habitAdapter = new HabitTrackerAdapter(requireActivity());
         binding.recyclerViewHabits.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.recyclerViewHabits.setAdapter(habitAdapter);
     }
 
     private void setUpProgressObservers() {
-        habitViewModel.saveProgressLiveData.observe(getViewLifecycleOwner(), isSaved -> {
-            if (isSaved) {
-                loadHabitsWithSpecificDate(binding.tvDate.getText().toString());
-            } else {
-                Toast.makeText(getContext(), R.string.couldn_t_save_the_changes_happened_in_the_progress, Toast.LENGTH_SHORT).show();
+        habitViewModel.saveProgressLiveData.observe(getViewLifecycleOwner(), resource -> {
+            switch (resource.getStatus()){
+                case LOADING: {
+                    binding.progressBar.setVisibility(View.VISIBLE);
+                    break;
+                }
+                case SUCCESS: {
+                    binding.progressBar.setVisibility(View.GONE);
+                    loadHabitsWithSpecificDate(binding.tvDate.getText().toString());
+                    break;
+                }
+                case ERROR: {
+                    binding.progressBar.setVisibility(View.GONE);
+                    Toast.makeText(getContext(), R.string.couldn_t_save_the_changes_happened_in_the_progress, Toast.LENGTH_SHORT).show();
+                    break;
+                }
             }
         });
     }
@@ -118,13 +132,7 @@ public class HomeHabitTrackerFragment extends Fragment implements HabitTrackerAd
         return dialog;
     }
 
-    interface OnDateSelectedListener {
-        void onDateSelected(String selectedDate);
-    }
 
-    private String getCurrentDate() {
-        return new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-    }
 
     @Override
     public void onDestroyView() {
@@ -135,8 +143,6 @@ public class HomeHabitTrackerFragment extends Fragment implements HabitTrackerAd
     @Override
     public void onHabitSwiped(int habitId, int progress, int position) {
         if (progress > 0) {
-            this.position = position;
-            newProgress = progress;
             habitViewModel.updateHabitProgress(habitId, progress);
         }
     }

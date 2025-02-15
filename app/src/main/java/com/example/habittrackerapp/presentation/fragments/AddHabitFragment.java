@@ -39,7 +39,6 @@ public class AddHabitFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         setupListeners();
         setUpErrorObserver();
-
     }
 
     private void setupListeners() {
@@ -51,7 +50,7 @@ public class AddHabitFragment extends Fragment {
             String details = binding.etDetails.getText().toString().trim();
 
             if (!title.isEmpty() && !selectedDate.isEmpty()) {
-                viewModel.insertHabit(new HabitEntity(title, details, selectedDate, 0), selectedDate);
+                viewModel.insertHabit(new HabitEntity(title, details, selectedDate, 0));
                 Toast.makeText(requireContext(), R.string.habit_is_created_successfully, Toast.LENGTH_SHORT).show();
                 Navigation.findNavController(v).popBackStack();
             } else {
