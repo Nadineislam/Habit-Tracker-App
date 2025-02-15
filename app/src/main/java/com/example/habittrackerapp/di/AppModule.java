@@ -5,7 +5,7 @@ import android.content.Context;
 import androidx.room.Room;
 
 import com.example.habittrackerapp.data.db.HabitDatabase;
-import com.example.habittrackerapp.data.db.habit.HabitDao;
+import com.example.habittrackerapp.data.db.dao.HabitDao;
 import com.example.habittrackerapp.data.repository.HabitRepositoryImpl;
 import com.example.habittrackerapp.domain.repository.HabitRepository;
 

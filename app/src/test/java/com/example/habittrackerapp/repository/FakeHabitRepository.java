@@ -3,13 +3,14 @@ package com.example.habittrackerapp.repository;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.habittrackerapp.data.db.habit.HabitEntity;
+import com.example.habittrackerapp.data.entity.HabitEntity;
 import com.example.habittrackerapp.domain.repository.HabitRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Completable;
+import io.reactivex.Observable;
 import io.reactivex.Single;
 
 public class FakeHabitRepository implements HabitRepository {
@@ -76,16 +77,14 @@ public class FakeHabitRepository implements HabitRepository {
     }
 
     @Override
-    public LiveData<List<HabitEntity>> getAllHabitsByDate(String date) {
-        MutableLiveData<List<HabitEntity>> liveData = new MutableLiveData<>();
-        List<HabitEntity> filteredHabits = new ArrayList<>();
+    public Observable<List<HabitEntity>> getAllHabitsByDate(String date) {
+        List<HabitEntity> habitsByDate = new ArrayList<>();
         for (HabitEntity habit : habits) {
             if (habit.getDate().equals(date)) {
-                filteredHabits.add(habit);
+                habitsByDate.add(habit);
             }
         }
-        liveData.setValue(filteredHabits);
-        return liveData;
+        return Observable.just(habitsByDate);
     }
 
     @Override

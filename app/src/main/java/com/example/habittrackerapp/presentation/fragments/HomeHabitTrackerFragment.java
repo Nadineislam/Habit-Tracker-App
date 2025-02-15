@@ -50,9 +50,40 @@ public class HomeHabitTrackerFragment extends Fragment implements OnHabitSwipeLi
         binding.tvDate.setText(getCurrentDate());
         setUpRecyclerView();
         setUpProgressObservers();
+        getAllHabitByDateObserver();
         setUpListeners();
         loadHabitsWithSpecificDate(getCurrentDate());
 
+    }
+
+    private void getAllHabitByDateObserver() {
+        habitViewModel.getAllHabitsByDate.observe(getViewLifecycleOwner(), resource -> {
+            switch (resource.getStatus()){
+                case LOADING: {
+                    binding.progressBar.setVisibility(View.VISIBLE);
+                    binding.emptyText.setVisibility(View.GONE);
+                    break;
+                }
+                case SUCCESS: {
+                    binding.progressBar.setVisibility(View.GONE);
+
+                    if (resource.getData().isEmpty()){
+                        binding.emptyText.setVisibility(View.VISIBLE);
+                    }
+
+                    if (resource.getData() != null) {
+                        habitAdapter.setHabitProgressMap(resource.getData(), this);
+                    }
+                    break;
+                }
+                case ERROR: {
+                    binding.progressBar.setVisibility(View.GONE);
+                    binding.emptyText.setVisibility(View.GONE);
+                    Toast.makeText(getContext(), R.string.error_happened_couldn_t_load_habits, Toast.LENGTH_SHORT).show();
+                    break;
+                }
+            }
+        });
     }
 
     private void setUpRecyclerView() {
@@ -93,11 +124,7 @@ public class HomeHabitTrackerFragment extends Fragment implements OnHabitSwipeLi
     }
 
     private void loadHabitsWithSpecificDate(String date) {
-        habitViewModel.getAllHabitsByDate(date).observe(getViewLifecycleOwner(), habitsWithProgress -> {
-            if (habitsWithProgress != null) {
-                habitAdapter.setHabitProgressMap(habitsWithProgress, this);
-            }
-        });
+        habitViewModel.getAllHabitsByDate(date);
     }
 
     private void selectDateForHabits() {

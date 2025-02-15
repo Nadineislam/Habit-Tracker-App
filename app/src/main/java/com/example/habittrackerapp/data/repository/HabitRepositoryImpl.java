@@ -2,8 +2,8 @@ package com.example.habittrackerapp.data.repository;
 
 import androidx.lifecycle.LiveData;
 
-import com.example.habittrackerapp.data.db.habit.HabitDao;
-import com.example.habittrackerapp.data.db.habit.HabitEntity;
+import com.example.habittrackerapp.data.db.dao.HabitDao;
+import com.example.habittrackerapp.data.entity.HabitEntity;
 import com.example.habittrackerapp.domain.repository.HabitRepository;
 
 import java.util.List;
@@ -11,6 +11,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.Completable;
+import io.reactivex.Observable;
 import io.reactivex.Single;
 
 public class HabitRepositoryImpl implements HabitRepository {
@@ -42,7 +43,7 @@ public class HabitRepositoryImpl implements HabitRepository {
     }
 
     @Override
-    public LiveData<List<HabitEntity>> getAllHabitsByDate(String date) {
+    public Observable<List<HabitEntity>> getAllHabitsByDate(String date) {
         return habitDao.getAllHabitsByDate(date);
     }
 

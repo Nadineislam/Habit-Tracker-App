@@ -1,4 +1,4 @@
-package com.example.habittrackerapp.data.db.habit;
+package com.example.habittrackerapp.data.db.dao;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
@@ -6,8 +6,11 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
+import com.example.habittrackerapp.data.entity.HabitEntity;
+
 import java.util.List;
 import io.reactivex.Completable;
+import io.reactivex.Observable;
 import io.reactivex.Single;
 
 @Dao
@@ -27,7 +30,7 @@ public interface HabitDao {
     LiveData<List<HabitEntity>> getCompletedHabitsByDate(String date);
 
     @Query("SELECT * From habits where date = :date")
-    LiveData<List<HabitEntity>> getAllHabitsByDate(String date);
+    Observable<List<HabitEntity>> getAllHabitsByDate(String date);
 
 }
 

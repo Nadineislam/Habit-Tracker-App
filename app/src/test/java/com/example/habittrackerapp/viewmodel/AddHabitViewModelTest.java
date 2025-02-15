@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 
-import com.example.habittrackerapp.data.db.habit.HabitEntity;
+import com.example.habittrackerapp.data.entity.HabitEntity;
 import com.example.habittrackerapp.presentation.viewmodel.AddHabitViewModel;
 import com.example.habittrackerapp.repository.FakeHabitRepository;
 

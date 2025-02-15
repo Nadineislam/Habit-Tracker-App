@@ -7,4 +7,5 @@
     <string name="habit_updated">Habit updated!</string>
     <string name="habit_is_created_successfully">Habit is created successfully</string>
     <string name="couldn_t_save_the_changes_happened_in_the_progress">Couldn\'t save the changes happened in the progress!</string>
+    <string name="error_happened_couldn_t_load_habits">Error Happened, Couldn\'t Load Habits</string>
 </resources>

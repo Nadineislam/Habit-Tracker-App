@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.habittrackerapp.data.db.habit.HabitEntity;
+import com.example.habittrackerapp.data.entity.HabitEntity;
 import com.example.habittrackerapp.databinding.ItemHabitBinding;
 import com.example.habittrackerapp.presentation.fragments.EditHabitDialog;
 import com.example.habittrackerapp.presentation.listeners.OnHabitSwipeListener;

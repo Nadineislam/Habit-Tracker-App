@@ -7,7 +7,7 @@ import android.annotation.SuppressLint;
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 
 import com.example.habittrackerapp.repository.FakeHabitRepository;
-import com.example.habittrackerapp.data.db.habit.HabitEntity;
+import com.example.habittrackerapp.data.entity.HabitEntity;
 import com.example.habittrackerapp.presentation.viewmodel.EditHabitViewModel;
 
 import org.junit.Before;

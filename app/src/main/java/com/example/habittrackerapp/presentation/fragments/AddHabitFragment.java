@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.habittrackerapp.R;
-import com.example.habittrackerapp.data.db.habit.HabitEntity;
+import com.example.habittrackerapp.data.entity.HabitEntity;
 import com.example.habittrackerapp.databinding.FragmentAddHabitBinding;
 import com.example.habittrackerapp.presentation.viewmodel.AddHabitViewModel;
 
