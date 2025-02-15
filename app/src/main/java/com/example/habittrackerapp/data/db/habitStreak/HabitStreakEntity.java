@@ -31,6 +31,10 @@ public class HabitStreakEntity {
         this.date = date;
         this.progress = progress;
     }
+
+    public int getHabitId() {
+        return habitId;
+    }
 }
 
 

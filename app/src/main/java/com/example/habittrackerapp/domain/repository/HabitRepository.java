@@ -17,7 +17,7 @@ public interface HabitRepository {
     LiveData<List<HabitEntity>> getCompletedHabitsByDate(String date);
 
     LiveData<List<HabitEntity>> getAllHabitsByDate(String date);
-    Completable saveHabitProgress(int habitId, int progress);
+    Completable updateHabitProgress(int habitId, int progress);
 
     LiveData<HabitEntity> getHabitById(int habitId);
     Completable updateHabit(int habitId, String title, String details);

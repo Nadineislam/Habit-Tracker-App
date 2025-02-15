@@ -70,6 +70,22 @@ public class HabitEntity {
     public String getDate() {
         return date;
     }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setTitle(@NonNull String title) {
+        this.title = title;
+    }
+
+    public void setDetails(String details) {
+        this.details = details;
+    }
+
+    public void setDate(@NonNull String date) {
+        this.date = date;
+    }
 }
 
 
