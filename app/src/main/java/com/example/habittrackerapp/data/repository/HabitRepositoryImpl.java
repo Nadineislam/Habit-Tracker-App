@@ -57,7 +57,7 @@ public class HabitRepositoryImpl implements HabitRepository {
     }
 
     @Override
-    public Completable saveHabitProgress(int habitId, int progress) {
+    public Completable updateHabitProgress(int habitId, int progress) {
         return habitDao.updateHabitProgress(habitId, progress);
     }
 }

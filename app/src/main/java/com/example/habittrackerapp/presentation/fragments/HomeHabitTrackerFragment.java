@@ -137,7 +137,7 @@ public class HomeHabitTrackerFragment extends Fragment implements HabitTrackerAd
         if (progress > 0) {
             this.position = position;
             newProgress = progress;
-            habitViewModel.saveHabitProgress(habitId, progress);
+            habitViewModel.updateHabitProgress(habitId, progress);
         }
     }
 }

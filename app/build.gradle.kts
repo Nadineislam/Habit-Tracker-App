@@ -81,6 +81,9 @@ dependencies {
     // Test helpers
     testImplementation (libs.room.testing)
 
+    testImplementation ("androidx.arch.core:core-testing:2.2.0")
+
+
 
 
 

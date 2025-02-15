@@ -35,8 +35,8 @@ public class HomeHabitTrackerViewModel extends ViewModel {
     }
 
     @SuppressLint("CheckResult")
-    public void saveHabitProgress(int habitId, int progress) {
-        habitRepository.saveHabitProgress(habitId, progress)
+    public void updateHabitProgress(int habitId, int progress) {
+        habitRepository.updateHabitProgress(habitId, progress)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> _saveProgressLiveData.setValue(true), throwable -> {
