@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/tvHabitTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Habit Title"
+            android:textSize="18sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/tvHabitDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Habit Details"
+            android:textSize="14sp"
+            android:textColor="@android:color/darker_gray"
+            android:visibility="gone"/>
+
+
+            <!-- Swipe Progress Bar -->
+            <SeekBar
+                android:id="@+id/seekHabitProgress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="100"
+                android:progress="0"
+                android:progressDrawable="@drawable/progress_bar"
+                android:thumb="@drawable/custom_thumb"
+                android:paddingTop="8dp"/>
+
+            <TextView
+                android:id="@+id/tvProgressStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Swipe to track"
+                android:textSize="12sp"
+                android:textColor="@android:color/darker_gray"
+                android:paddingTop="4dp"
+                android:layout_gravity="center_horizontal"/>
+
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
