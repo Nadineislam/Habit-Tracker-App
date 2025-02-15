@@ -7,43 +7,38 @@
     android:padding="16dp"
     android:gravity="center">
 
-    <!-- Habit Title -->
     <EditText
         android:id="@+id/etTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Habit Title"
+        android:hint="@string/habit_title"
         android:inputType="text"
         android:padding="12dp"
         android:background="@android:drawable/edit_text"
         android:layout_marginBottom="12dp"/>
 
-    <!-- Habit Details (Optional) -->
     <EditText
         android:id="@+id/etDetails"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Details (Optional)"
+        android:hint="@string/details_optional"
         android:inputType="textMultiLine"
         android:minLines="3"
         android:padding="12dp"
         android:background="@android:drawable/edit_text"
         android:layout_marginBottom="12dp"/>
 
-    <!-- Calendar View for Date Selection -->
     <CalendarView
         android:id="@+id/calendarView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="12dp"/>
 
-    <!-- Add Habit Button -->
     <Button
         android:id="@+id/btnAddHabit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Add Habit"
-
+        android:text="@string/add_habit"
         android:textColor="@android:color/white"
         android:padding="12dp"/>
 </LinearLayout>

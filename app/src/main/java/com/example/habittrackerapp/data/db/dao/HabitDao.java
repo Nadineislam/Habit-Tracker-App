@@ -27,7 +27,7 @@ public interface HabitDao {
     @Query("UPDATE habits SET title = :title, details = :details WHERE id = :habitId")
     Completable updateHabit(int habitId, String title, String details);
     @Query("SELECT * FROM habits where date = :date AND progress = 100")
-    LiveData<List<HabitEntity>> getCompletedHabitsByDate(String date);
+    Observable<List<HabitEntity>> getCompletedHabitsByDate(String date);
 
     @Query("SELECT * From habits where date = :date")
     Observable<List<HabitEntity>> getAllHabitsByDate(String date);

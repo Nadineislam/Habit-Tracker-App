@@ -9,7 +9,7 @@ import io.reactivex.Single;
 
 public interface HabitRepository {
     Single<Long> insertHabit(HabitEntity habit);
-    LiveData<List<HabitEntity>> getCompletedHabitsByDate(String date);
+    Observable<List<HabitEntity>> getCompletedHabitsByDate(String date);
     Observable<List<HabitEntity>> getAllHabitsByDate(String date);
     Completable updateHabitProgress(int habitId, int progress);
     LiveData<HabitEntity> getHabitById(int habitId);

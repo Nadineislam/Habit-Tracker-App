@@ -1,5 +1,11 @@
 package com.example.habittrackerapp.core;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.view.LayoutInflater;
+
+import com.example.habittrackerapp.databinding.DialogCalendarBinding;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -21,5 +27,17 @@ public class Utils {
         }
     }
 
+    public static AlertDialog createDatePickerDialog(OnDateSelectedListener listener, Context context, LayoutInflater inflater) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        DialogCalendarBinding calendarBinding = DialogCalendarBinding.inflate(inflater);
+        builder.setView(calendarBinding.getRoot());
+        AlertDialog dialog = builder.create();
 
+        calendarBinding.calendarView.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
+            String selectedDate = String.format(Locale.getDefault(), "%04d-%02d-%02d", year, month + 1, dayOfMonth);
+            listener.onDateSelected(selectedDate);
+            dialog.dismiss();
+        });
+        return dialog;
+    }
 }

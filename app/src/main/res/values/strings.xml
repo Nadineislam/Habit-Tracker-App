@@ -8,4 +8,18 @@
     <string name="habit_is_created_successfully">Habit is created successfully</string>
     <string name="couldn_t_save_the_changes_happened_in_the_progress">Couldn\'t save the changes happened in the progress!</string>
     <string name="error_happened_couldn_t_load_habits">Error Happened, Couldn\'t Load Habits</string>
+    <string name="select_date">Select Date</string>
+    <string name="no_completed_habits">You don\'t have any completed habits for this date!</string>
+    <string name="details_optional">Details (Optional)</string>
+    <string name="add_habit">Add Habit</string>
+    <string name="habit_title">Habit Title</string>
+    <string name="cancel">Cancel</string>
+    <string name="update_habit">Update Habit</string>
+    <string name="habit_details">Habit Details</string>
+    <string name="you_don_t_have_any_habits_for_this_date">You don\'t have any habits for this date!</string>
+    <string name="calendar_icon">Calendar Icon</string>
+    <string name="history_icon">History Icon</string>
+    <string name="today_s_date">Today’s Date</string>
+    <string name="habits">Habits</string>
+    <string name="swipe_to_track">Swipe to track</string>
 </resources>

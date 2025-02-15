@@ -64,16 +64,14 @@ public class FakeHabitRepository implements HabitRepository {
     }
 
     @Override
-    public LiveData<List<HabitEntity>> getCompletedHabitsByDate(String date) {
-        MutableLiveData<List<HabitEntity>> liveData = new MutableLiveData<>();
-        List<HabitEntity> completedHabits = new ArrayList<>();
+    public Observable<List<HabitEntity>> getCompletedHabitsByDate(String date) {
+        List<HabitEntity> habitsByDate = new ArrayList<>();
         for (HabitEntity habit : habits) {
             if (habit.getDate().equals(date) && habit.getProgress() == 100) {
-                completedHabits.add(habit);
+                habitsByDate.add(habit);
             }
         }
-        liveData.setValue(completedHabits);
-        return liveData;
+        return Observable.just(habitsByDate);
     }
 
     @Override

@@ -11,6 +11,7 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CalendarView;
 import android.widget.Toast;
 
 import com.example.habittrackerapp.R;
@@ -21,7 +22,7 @@ import com.example.habittrackerapp.presentation.viewmodel.AddHabitViewModel;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class AddHabitFragment extends Fragment {
+public class AddHabitFragment extends Fragment implements View.OnClickListener, CalendarView.OnDateChangeListener {
     private FragmentAddHabitBinding binding;
     private AddHabitViewModel viewModel;
     private String selectedDate = "";
@@ -42,21 +43,8 @@ public class AddHabitFragment extends Fragment {
     }
 
     private void setupListeners() {
-        binding.calendarView.setOnDateChangeListener((view, year, month, dayOfMonth) ->
-                selectedDate = year + "-" + (month + 1) + "-" + dayOfMonth
-        );
-        binding.btnAddHabit.setOnClickListener(v -> {
-            String title = binding.etTitle.getText().toString().trim();
-            String details = binding.etDetails.getText().toString().trim();
-
-            if (!title.isEmpty() && !selectedDate.isEmpty()) {
-                viewModel.insertHabit(new HabitEntity(title, details, selectedDate, 0));
-                Toast.makeText(requireContext(), R.string.habit_is_created_successfully, Toast.LENGTH_SHORT).show();
-                Navigation.findNavController(v).popBackStack();
-            } else {
-                Toast.makeText(requireContext(), R.string.title_and_date_required, Toast.LENGTH_SHORT).show();
-            }
-        });
+        binding.calendarView.setOnDateChangeListener(this);
+        binding.btnAddHabit.setOnClickListener(this);
     }
 
     private void setUpErrorObserver() {
@@ -65,5 +53,26 @@ public class AddHabitFragment extends Fragment {
                 Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.equals(binding.btnAddHabit)) {
+            String title = binding.etTitle.getText().toString().trim();
+            String details = binding.etDetails.getText().toString().trim();
+
+            if (!title.isEmpty() && !selectedDate.isEmpty()) {
+                viewModel.insertHabit(new HabitEntity(title, details, selectedDate, 0));
+                Toast.makeText(requireContext(), R.string.habit_is_created_successfully, Toast.LENGTH_SHORT).show();
+                Navigation.findNavController(view).popBackStack();
+            } else {
+                Toast.makeText(requireContext(), R.string.title_and_date_required, Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    @Override
+    public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int dayOfMonth) {
+        selectedDate = year + "-" + (month + 1) + "-" + dayOfMonth;
     }
 }

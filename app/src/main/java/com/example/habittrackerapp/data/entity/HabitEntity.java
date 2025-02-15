@@ -15,9 +15,10 @@ public class HabitEntity {
     private String details;
     private int progress;
 
-
     @NonNull
     public String date;
+
+    public HabitEntity() {}
 
     public HabitEntity(@NonNull String title, String details, @NonNull String date, int progress) {
         this.title = title;

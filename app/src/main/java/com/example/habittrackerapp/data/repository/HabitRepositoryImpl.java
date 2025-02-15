@@ -38,7 +38,7 @@ public class HabitRepositoryImpl implements HabitRepository {
     }
 
     @Override
-    public LiveData<List<HabitEntity>> getCompletedHabitsByDate(String date) {
+    public Observable<List<HabitEntity>> getCompletedHabitsByDate(String date) {
         return habitDao.getCompletedHabitsByDate(date);
     }
 

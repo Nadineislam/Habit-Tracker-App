@@ -46,14 +46,13 @@ public class HabitTrackerAdapter extends RecyclerView.Adapter<HabitViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull HabitViewHolder holder, int position) {
         HabitEntity entry = habits.get(position);
-        holder.bind(entry, position,listener);
+        holder.bind(entry, position, listener);
 
-        holder.itemView.setOnLongClickListener( v -> {
+        holder.itemView.setOnLongClickListener(v -> {
             if (activity != null) {
-                FragmentManager fragmentManager =((AppCompatActivity) activity).getSupportFragmentManager();
+                FragmentManager fragmentManager = ((AppCompatActivity) activity).getSupportFragmentManager();
                 new EditHabitDialog(entry.getId()).show(fragmentManager, "EditHabitDialog");
             }
-
             return true;
         });
 
@@ -100,7 +99,8 @@ class HabitViewHolder extends RecyclerView.ViewHolder {
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {

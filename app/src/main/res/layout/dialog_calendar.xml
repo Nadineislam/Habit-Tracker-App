@@ -2,24 +2,24 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="16dp"
     android:background="@android:color/white"
-    android:elevation="4dp">
+    android:elevation="4dp"
+    android:orientation="vertical"
+    android:padding="16dp">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Select Date"
-        android:textSize="18sp"
-        android:textStyle="bold"
         android:layout_gravity="center"
-        android:paddingBottom="10dp"/>
+        android:paddingBottom="10dp"
+        android:text="@string/select_date"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <CalendarView
         android:id="@+id/calendarView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:dateTextAppearance="@style/TextAppearance.AppCompat.Medium"/>
+        android:dateTextAppearance="@style/TextAppearance.AppCompat.Medium" />
 
 </LinearLayout>
