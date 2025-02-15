@@ -26,16 +26,16 @@ public class FakeHabitRepository implements HabitRepository {
     }
 
     @Override
-    public LiveData<HabitEntity> getHabitById(int habitId) {
+    public Observable<HabitEntity> getHabitById(int habitId) {
         MutableLiveData<HabitEntity> liveData = new MutableLiveData<>();
         for (HabitEntity habit : habits) {
             if (habit.getId() == habitId) {
                 liveData.setValue(habit);
-                return liveData;
+                return Observable.just(liveData.getValue());
             }
         }
         liveData.setValue(null);
-        return liveData;
+        return Observable.just(liveData.getValue());
     }
 
     @Override

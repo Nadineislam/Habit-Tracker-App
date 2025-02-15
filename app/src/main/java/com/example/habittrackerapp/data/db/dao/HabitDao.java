@@ -22,7 +22,7 @@ public interface HabitDao {
     Completable updateHabitProgress(int habitId, int progress);
 
     @Query("SELECT * FROM habits WHERE id = :habitId")
-    LiveData<HabitEntity> getHabitById(int habitId);
+    Observable<HabitEntity> getHabitById(int habitId);
 
     @Query("UPDATE habits SET title = :title, details = :details WHERE id = :habitId")
     Completable updateHabit(int habitId, String title, String details);

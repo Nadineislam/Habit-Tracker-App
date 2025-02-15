@@ -22,7 +22,7 @@ public class HabitRepositoryImpl implements HabitRepository {
     }
 
     @Override
-    public LiveData<HabitEntity> getHabitById(int habitId) {
+    public Observable<HabitEntity> getHabitById(int habitId) {
         return habitDao.getHabitById(habitId);
     }
 
@@ -30,7 +30,6 @@ public class HabitRepositoryImpl implements HabitRepository {
     public Completable updateHabit(int habitId, String title, String details) {
         return habitDao.updateHabit(habitId, title, details);
     }
-
 
     @Override
     public Single<Long> insertHabit(HabitEntity habit) {

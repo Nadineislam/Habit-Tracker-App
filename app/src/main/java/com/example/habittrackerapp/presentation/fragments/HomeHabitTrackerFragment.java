@@ -67,7 +67,7 @@ public class HomeHabitTrackerFragment extends Fragment implements OnHabitSwipeLi
     }
 
     private void setUpRecyclerView() {
-        habitAdapter = new HabitTrackerAdapter(requireActivity());
+        habitAdapter = new HabitTrackerAdapter(requireActivity(), getViewLifecycleOwner());
         binding.recyclerViewHabits.setAdapter(habitAdapter);
     }
 
@@ -94,6 +94,7 @@ public class HomeHabitTrackerFragment extends Fragment implements OnHabitSwipeLi
                     habits = resource.getData();
 
                     if (resource.getData() != null) {
+                        binding.emptyText.setVisibility(View.GONE);
                         habitAdapter.setHabitProgressMap(resource.getData(), this);
                     }
                     break;
