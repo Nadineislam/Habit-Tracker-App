@@ -3,19 +3,18 @@ package com.example.habittrackerapp.repository;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.habittrackerapp.data.db.habit.HabitEntity;
-import com.example.habittrackerapp.data.db.habitStreak.HabitStreakEntity;
+import com.example.habittrackerapp.data.entity.HabitEntity;
 import com.example.habittrackerapp.domain.repository.HabitRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Completable;
+import io.reactivex.Observable;
 import io.reactivex.Single;
 
 public class FakeHabitRepository implements HabitRepository {
     private final List<HabitEntity> habits = new ArrayList<>();
-    private final List<HabitStreakEntity> habitStreaks = new ArrayList<>();
 
     private final boolean failInsertHabit = false;
     private final boolean failInsertStreak = false;
@@ -65,38 +64,25 @@ public class FakeHabitRepository implements HabitRepository {
     }
 
     @Override
-    public Single<Long> insertHabitStreak(HabitStreakEntity habitStreak) {
-        if (failInsertStreak) {
-            return Single.error(new Throwable("Simulated insert habit streak failure"));
-        }
-        habitStreaks.add(habitStreak);
-        return Single.just((long) habitStreaks.size());
-    }
-
-    @Override
-    public LiveData<List<HabitEntity>> getCompletedHabitsByDate(String date) {
-        MutableLiveData<List<HabitEntity>> liveData = new MutableLiveData<>();
-        List<HabitEntity> completedHabits = new ArrayList<>();
+    public Observable<List<HabitEntity>> getCompletedHabitsByDate(String date) {
+        List<HabitEntity> habitsByDate = new ArrayList<>();
         for (HabitEntity habit : habits) {
             if (habit.getDate().equals(date) && habit.getProgress() == 100) {
-                completedHabits.add(habit);
+                habitsByDate.add(habit);
             }
         }
-        liveData.setValue(completedHabits);
-        return liveData;
+        return Observable.just(habitsByDate);
     }
 
     @Override
-    public LiveData<List<HabitEntity>> getAllHabitsByDate(String date) {
-        MutableLiveData<List<HabitEntity>> liveData = new MutableLiveData<>();
-        List<HabitEntity> filteredHabits = new ArrayList<>();
+    public Observable<List<HabitEntity>> getAllHabitsByDate(String date) {
+        List<HabitEntity> habitsByDate = new ArrayList<>();
         for (HabitEntity habit : habits) {
             if (habit.getDate().equals(date)) {
-                filteredHabits.add(habit);
+                habitsByDate.add(habit);
             }
         }
-        liveData.setValue(filteredHabits);
-        return liveData;
+        return Observable.just(habitsByDate);
     }
 
     @Override
@@ -115,9 +101,5 @@ public class FakeHabitRepository implements HabitRepository {
 
     public List<HabitEntity> getInsertedHabits() {
         return new ArrayList<>(habits);
-    }
-
-    public List<HabitStreakEntity> getInsertedStreaks() {
-        return new ArrayList<>(habitStreaks);
     }
 }

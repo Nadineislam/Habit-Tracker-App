@@ -1,24 +1,21 @@
 package com.example.habittrackerapp.viewmodel;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
+
+import com.example.habittrackerapp.data.entity.HabitEntity;
+import com.example.habittrackerapp.presentation.viewmodel.AddHabitViewModel;
+import com.example.habittrackerapp.repository.FakeHabitRepository;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-
-import com.example.habittrackerapp.repository.FakeHabitRepository;
-import com.example.habittrackerapp.data.db.habit.HabitEntity;
-import com.example.habittrackerapp.data.db.habitStreak.HabitStreakEntity;
-import com.example.habittrackerapp.presentation.viewmodel.AddHabitViewModel;
-
-import java.util.List;
-
-
 import org.junit.rules.TestRule;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
+
+import java.util.List;
 
 import io.reactivex.android.plugins.RxAndroidPlugins;
 import io.reactivex.plugins.RxJavaPlugins;
@@ -58,14 +55,12 @@ public class AddHabitViewModelTest {
     @Test
     public void whenInsertHabitIsCalled_thenHabitAndStreakShouldBeAdded() {
         HabitEntity habit = new HabitEntity("Exercise", "Run 5km", "2025-02-15", 0);
-        String date = "2025-02-15";
 
-        viewModel.insertHabit(habit, date);
+        viewModel.insertHabit(habit);
 
         List<HabitEntity> insertedHabits = fakeRepository.getInsertedHabits();
-        List<HabitStreakEntity> insertedStreaks = fakeRepository.getInsertedStreaks();
 
-        assertEquals(insertedHabits.get(0).getId(), insertedStreaks.get(0).getHabitId());
+        assertEquals(insertedHabits.get(0).getId(), insertedHabits.size());
     }
 }
 

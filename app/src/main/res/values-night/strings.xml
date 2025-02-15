@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error_happened_couldn_t_load_habits">Error Happened, Couldn\'t Load Habits</string>
+    <string name="no_completed_habits">You don\'t have any completed habits for this date!</string>
+</resources>

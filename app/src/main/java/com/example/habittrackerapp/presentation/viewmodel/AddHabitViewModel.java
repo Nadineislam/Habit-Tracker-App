@@ -4,12 +4,13 @@ import android.annotation.SuppressLint;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import com.example.habittrackerapp.data.db.habit.HabitEntity;
-import com.example.habittrackerapp.data.db.habitStreak.HabitStreakEntity;
+import com.example.habittrackerapp.data.entity.HabitEntity;
 import com.example.habittrackerapp.domain.repository.HabitRepository;
 import javax.inject.Inject;
 import dagger.hilt.android.lifecycle.HiltViewModel;
+import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 @HiltViewModel
@@ -24,25 +25,23 @@ public class AddHabitViewModel extends ViewModel {
     }
 
     @SuppressLint("CheckResult")
-    public void insertHabit(HabitEntity habit, String date) {
-        repository.insertHabit(habit)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        habitId -> insertHabitStreak(habitId.intValue(), date),
-                        this::handleError
-                );
-    }
+    public void insertHabit(HabitEntity habit) {
+        repository.insertHabit(habit).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new SingleObserver<Long>() {
+            @Override
+            public void onSubscribe(Disposable d) {
 
-    @SuppressLint("CheckResult")
-    private void insertHabitStreak(int habitId, String date) {
-        repository.insertHabitStreak(new HabitStreakEntity(habitId, date, 0))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        id -> {},
-                        this::handleError
-                );
+            }
+
+            @Override
+            public void onSuccess(Long aLong) {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                handleError(e);
+            }
+        });
     }
 
     private void handleError(Throwable error) {
