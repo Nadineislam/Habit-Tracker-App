@@ -8,29 +8,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SeekBar;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.MutableLiveData;
-import androidx.recyclerview.widget.ListAdapter;
-import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.habittrackerapp.data.db.HabitEntity;
+
+import com.example.habittrackerapp.data.db.habit.HabitEntity;
 import com.example.habittrackerapp.databinding.ItemHabitBinding;
 import com.example.habittrackerapp.presentation.fragments.EditHabitDialog;
 
-import java.util.AbstractMap;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
-public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.HabitViewHolder> {
+public class HabitTrackerAdapter extends RecyclerView.Adapter<HabitTrackerAdapter.HabitViewHolder> {
     private OnHabitSwipeListener listener;
 
-    private List<HabitEntity> habits = new ArrayList<>() ;
+    private List<HabitEntity> habits = new ArrayList<>();
 
     public void setHabitProgressMap(List<HabitEntity> habits, OnHabitSwipeListener listener) {
         this.habits = habits;
@@ -56,15 +50,11 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.HabitViewHol
 
         holder.itemView.setOnLongClickListener(v -> {
             Context context = v.getContext();
+            AppCompatActivity activity = getActivityFromContext(context);
 
-            if (context instanceof AppCompatActivity) {
-                FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
-                EditHabitDialog editDialog = new EditHabitDialog(entry.getId());
-                editDialog.show(fragmentManager, "EditHabitDialog");
-            } else if (context instanceof ContextWrapper && ((ContextWrapper) context).getBaseContext() instanceof AppCompatActivity) {
-                FragmentManager fragmentManager = ((AppCompatActivity) ((ContextWrapper) context).getBaseContext()).getSupportFragmentManager();
-                EditHabitDialog editDialog = new EditHabitDialog(entry.getId());
-                editDialog.show(fragmentManager, "EditHabitDialog");
+            if (activity != null) {
+                FragmentManager fragmentManager = activity.getSupportFragmentManager();
+                new EditHabitDialog(entry.getId()).show(fragmentManager, "EditHabitDialog");
             }
 
             return true;
@@ -96,8 +86,8 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.HabitViewHol
             }
 
             binding.seekHabitProgress.setProgress(habit.getProgress());
-            updateProgressColor(binding.seekHabitProgress, habit.getProgress(), position);
-            updateStatusText(habit.getProgress(), position);
+            updateProgressColor(binding.seekHabitProgress, habit.getProgress());
+            updateStatusText(habit.getProgress());
 
             binding.seekHabitProgress.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 @Override
@@ -110,26 +100,38 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.HabitViewHol
                 }
 
                 @Override
-                public void onStartTrackingTouch(SeekBar seekBar) {}
+                public void onStartTrackingTouch(SeekBar seekBar) {
+                }
 
                 @Override
                 public void onStopTrackingTouch(SeekBar seekBar) {
                     int newProgress = seekBar.getProgress();
-                        updateProgressColor(seekBar, newProgress, position);
-                        updateStatusText(newProgress, position);
-                        listener.onHabitSwiped(habit.getId(), newProgress, position);
+                    updateProgressColor(seekBar, newProgress);
+                    updateStatusText(newProgress);
+                    listener.onHabitSwiped(habit.getId(), newProgress, position);
                 }
             });
         }
 
-        private void updateProgressColor(SeekBar seekBar, int progress, int position) {
+        private void updateProgressColor(SeekBar seekBar, int progress) {
             int color = (progress < 20) ? Color.RED : (progress < 99.9) ? Color.YELLOW : Color.GREEN;
-            seekBar.getProgressDrawable().setColorFilter(color, PorterDuff.Mode.SRC_IN);}
+            seekBar.getProgressDrawable().setColorFilter(color, PorterDuff.Mode.SRC_IN);
+        }
 
-        private void updateStatusText(int progress, int position) {
+        private void updateStatusText(int progress) {
             binding.tvProgressStatus.setText(progress < 20 ? "Just Started" :
                     progress < 99.9 ? "In Progress" : "Completed!");
         }
+    }
+
+    private AppCompatActivity getActivityFromContext(Context context) {
+        while (context instanceof ContextWrapper) {
+            if (context instanceof AppCompatActivity) {
+                return (AppCompatActivity) context;
+            }
+            context = ((ContextWrapper) context).getBaseContext();
+        }
+        return null;
     }
 }
 

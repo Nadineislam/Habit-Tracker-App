@@ -2,44 +2,31 @@ package com.example.habittrackerapp.presentation.fragments;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.widget.Toast;
 import com.example.habittrackerapp.R;
-import com.example.habittrackerapp.data.db.HabitEntity;
-import com.example.habittrackerapp.data.db.HabitStreakEntity;
-import com.example.habittrackerapp.data.db.HabitWithProgress;
 import com.example.habittrackerapp.databinding.DialogCalendarBinding;
 import com.example.habittrackerapp.databinding.FragmentHomeHabitTrackerBinding;
-import com.example.habittrackerapp.presentation.adapter.HabitAdapter;
-import com.example.habittrackerapp.presentation.viewmodel.HabitViewModel;
-
+import com.example.habittrackerapp.presentation.adapter.HabitTrackerAdapter;
+import com.example.habittrackerapp.presentation.viewmodel.HomeHabitTrackerViewModel;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class HomeHabitTrackerFragment extends Fragment implements HabitAdapter.OnHabitSwipeListener {
+public class HomeHabitTrackerFragment extends Fragment implements HabitTrackerAdapter.OnHabitSwipeListener {
     private FragmentHomeHabitTrackerBinding binding;
-    private HabitViewModel habitViewModel;
-    private HabitAdapter habitAdapter;
-
+    private HomeHabitTrackerViewModel habitViewModel;
+    private HabitTrackerAdapter habitAdapter;
     private int position;
     private int newProgress;
 
@@ -49,82 +36,90 @@ public class HomeHabitTrackerFragment extends Fragment implements HabitAdapter.O
         binding = FragmentHomeHabitTrackerBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
-        habitViewModel = new ViewModelProvider(this).get(HabitViewModel.class);
-
-        habitAdapter = new HabitAdapter();
-        binding.recyclerViewHabits.setLayoutManager(new LinearLayoutManager(getContext()));
-        binding.recyclerViewHabits.setAdapter(habitAdapter);
-
-        String todayDate = getCurrentDate();
-        binding.tvDate.setText(todayDate);
-        loadHabitsForDate(todayDate);
-
-        binding.fabAddHabit.setOnClickListener(v ->
-                Navigation.findNavController(v).navigate(R.id.action_homeHabitTrackerFragment_to_addHabitFragment)
-        );
-
-        binding.btnCalendar.setOnClickListener(v -> showCalendarDialog());
-
-        binding.btnHistory.setOnClickListener(v -> showHistoryDialog());
-
-        observe();
-
+        habitViewModel = new ViewModelProvider(this).get(HomeHabitTrackerViewModel.class);
 
         return view;
     }
 
-    private void observe() {
-        habitViewModel.getSaveProgressLiveData().observe(getViewLifecycleOwner(), isSaved -> {
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        binding.tvDate.setText(getCurrentDate());
+        setUpRecyclerView();
+        setUpProgressObservers();
+        setUpListeners();
+        loadHabitsWithSpecificDate(getCurrentDate());
+
+    }
+
+    private void setUpRecyclerView() {
+        habitAdapter = new HabitTrackerAdapter();
+        binding.recyclerViewHabits.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.recyclerViewHabits.setAdapter(habitAdapter);
+    }
+
+    private void setUpProgressObservers() {
+        habitViewModel.saveProgressLiveData.observe(getViewLifecycleOwner(), isSaved -> {
             if (isSaved) {
-                loadHabitsForDate(binding.tvDate.getText().toString());
+                loadHabitsWithSpecificDate(binding.tvDate.getText().toString());
             } else {
-                Log.e("HabitTracker", "Error saving progress");
+                Toast.makeText(getContext(), R.string.couldn_t_save_the_changes_happened_in_the_progress, Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void loadHabitsForDate(String date) {
-        habitViewModel.getHabitsWithProgressForDate(date).observe(getViewLifecycleOwner(), habitsWithProgress -> {
+    private void setUpListeners() {
+        binding.fabAddHabit.setOnClickListener(v ->
+                Navigation.findNavController(v).navigate(R.id.action_homeHabitTrackerFragment_to_addHabitFragment)
+        );
+
+        binding.btnCalendar.setOnClickListener(v -> selectDateForHabits());
+
+        binding.btnHistory.setOnClickListener(v -> getCompletedHabitsWithSpecificDate());
+    }
+
+    private void loadHabitsWithSpecificDate(String date) {
+        habitViewModel.getAllHabitsByDate(date).observe(getViewLifecycleOwner(), habitsWithProgress -> {
             if (habitsWithProgress != null) {
                 habitAdapter.setHabitProgressMap(habitsWithProgress, this);
             }
         });
     }
 
-
-    private void showCalendarDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-        DialogCalendarBinding calendarBinding = DialogCalendarBinding.inflate(getLayoutInflater());
-        builder.setView(calendarBinding.getRoot());
-        AlertDialog dialog = builder.create();
-        dialog.show();
-
-        calendarBinding.calendarView.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
-            String selectedDate = String.format(Locale.getDefault(), "%04d-%02d-%02d", year, month + 1, dayOfMonth);
-
+    private void selectDateForHabits() {
+        AlertDialog dialog = createDatePickerDialog(selectedDate -> {
             binding.tvDate.setText(selectedDate);
-            loadHabitsForDate(selectedDate);
-            dialog.dismiss();
+            loadHabitsWithSpecificDate(selectedDate);
         });
+        dialog.show();
     }
 
-    private void showHistoryDialog() {
+    private void getCompletedHabitsWithSpecificDate() {
+        AlertDialog dialog = createDatePickerDialog(selectedDate -> {
+            binding.tvDate.setText(selectedDate);
+            habitViewModel.getCompletedHabitsWithSpecificDate(selectedDate)
+                    .observe(getViewLifecycleOwner(), completedHabits -> habitAdapter.setHabitProgressMap(completedHabits, this));
+        });
+        dialog.show();
+    }
+
+    private AlertDialog createDatePickerDialog(OnDateSelectedListener listener) {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         DialogCalendarBinding calendarBinding = DialogCalendarBinding.inflate(getLayoutInflater());
         builder.setView(calendarBinding.getRoot());
         AlertDialog dialog = builder.create();
-        dialog.show();
 
         calendarBinding.calendarView.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
             String selectedDate = String.format(Locale.getDefault(), "%04d-%02d-%02d", year, month + 1, dayOfMonth);
-
-
-            habitViewModel.getCompletedHabitsForDate(selectedDate).observe(getViewLifecycleOwner(), completedHabits -> {
-                habitAdapter.setHabitProgressMap(completedHabits, this);
-            });
-
+            listener.onDateSelected(selectedDate);
             dialog.dismiss();
         });
+
+        return dialog;
+    }
+
+    interface OnDateSelectedListener {
+        void onDateSelected(String selectedDate);
     }
 
     private String getCurrentDate() {

@@ -2,41 +2,22 @@ package com.example.habittrackerapp.presentation.fragments;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
+import com.example.habittrackerapp.R;
 import com.example.habittrackerapp.databinding.FragmentEditHabitBinding;
 import com.example.habittrackerapp.presentation.viewmodel.EditHabitViewModel;
-
 import dagger.hilt.android.AndroidEntryPoint;
-
-
 import android.app.Dialog;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.lifecycle.ViewModelProvider;
-
-import com.example.habittrackerapp.data.db.HabitEntity;
-import com.example.habittrackerapp.presentation.viewmodel.EditHabitViewModel;
 
 @AndroidEntryPoint
 public class EditHabitDialog extends DialogFragment {
     private FragmentEditHabitBinding binding;
     private EditHabitViewModel editHabitViewModel;
-    private int habitId;
+    private final int habitId;
 
     public EditHabitDialog(int habitId) {
         this.habitId = habitId;
@@ -45,7 +26,7 @@ public class EditHabitDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        binding = FragmentEditHabitBinding.inflate(LayoutInflater.from(getContext()));
+        binding = FragmentEditHabitBinding.inflate(getLayoutInflater());
         editHabitViewModel = new ViewModelProvider(this).get(EditHabitViewModel.class);
 
         loadHabitDetails();
@@ -73,12 +54,12 @@ public class EditHabitDialog extends DialogFragment {
         String updatedDetails = binding.etHabitDetails.getText().toString().trim();
 
         if (updatedTitle.isEmpty()) {
-            Toast.makeText(getContext(), "Title cannot be empty!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), R.string.title_cannot_be_empty, Toast.LENGTH_SHORT).show();
             return;
         }
 
         editHabitViewModel.updateHabit(habitId, updatedTitle, updatedDetails);
-        Toast.makeText(getContext(), "Habit updated!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), R.string.habit_updated, Toast.LENGTH_SHORT).show();
         dismiss();
     }
 }

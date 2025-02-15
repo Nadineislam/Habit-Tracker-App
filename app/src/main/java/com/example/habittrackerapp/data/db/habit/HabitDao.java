@@ -1,17 +1,13 @@
-package com.example.habittrackerapp.data.db;
+package com.example.habittrackerapp.data.db.habit;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
-import androidx.room.Update;
 
-import java.util.Date;
 import java.util.List;
-
 import io.reactivex.Completable;
-import io.reactivex.Flowable;
 import io.reactivex.Single;
 
 @Dao
@@ -27,7 +23,11 @@ public interface HabitDao {
 
     @Query("UPDATE habits SET title = :title, details = :details WHERE id = :habitId")
     Completable updateHabit(int habitId, String title, String details);
+    @Query("SELECT * FROM habits where date = :date AND progress = 100")
+    LiveData<List<HabitEntity>> getCompletedHabitsByDate(String date);
 
+    @Query("SELECT * From habits where date = :date")
+    LiveData<List<HabitEntity>> getAllHabitsByDate(String date);
 
 }
 

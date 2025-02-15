@@ -2,4 +2,9 @@
     <string name="app_name">Habit Tracker App</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_and_date_required">Title and Date required!</string>
+    <string name="title_cannot_be_empty">Title cannot be empty!</string>
+    <string name="habit_updated">Habit updated!</string>
+    <string name="habit_is_created_successfully">Habit is created successfully</string>
+    <string name="couldn_t_save_the_changes_happened_in_the_progress">Couldn\'t save the changes happened in the progress!</string>
 </resources>
