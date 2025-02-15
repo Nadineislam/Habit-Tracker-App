@@ -21,5 +21,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "Habit Tracker App"
 include(":app")
-include(":features")
-include(":features:habit_tracker_feature")
