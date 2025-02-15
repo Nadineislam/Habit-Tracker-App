@@ -11,6 +11,7 @@ import android.widget.SeekBar;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.habittrackerapp.data.entity.HabitEntity;
@@ -25,9 +26,11 @@ public class HabitTrackerAdapter extends RecyclerView.Adapter<HabitViewHolder> {
     private OnHabitSwipeListener listener;
     private List<HabitEntity> habits = new ArrayList<>();
     private final Activity activity;
+    private final LifecycleOwner owner;
 
-    public HabitTrackerAdapter(Activity activity) {
+    public HabitTrackerAdapter(Activity activity, LifecycleOwner owner) {
         this.activity = activity;
+        this.owner = owner;
     }
 
     public void setHabitProgressMap(List<HabitEntity> habits, OnHabitSwipeListener listener) {
@@ -51,7 +54,7 @@ public class HabitTrackerAdapter extends RecyclerView.Adapter<HabitViewHolder> {
         holder.itemView.setOnLongClickListener(v -> {
             if (activity != null) {
                 FragmentManager fragmentManager = ((AppCompatActivity) activity).getSupportFragmentManager();
-                new EditHabitDialog(entry.getId()).show(fragmentManager, "EditHabitDialog");
+                new EditHabitDialog(entry.getId(), owner ).show(fragmentManager, "EditHabitDialog");
             }
             return true;
         });

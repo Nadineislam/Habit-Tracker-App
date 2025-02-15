@@ -12,7 +12,7 @@ public interface HabitRepository {
     Observable<List<HabitEntity>> getCompletedHabitsByDate(String date);
     Observable<List<HabitEntity>> getAllHabitsByDate(String date);
     Completable updateHabitProgress(int habitId, int progress);
-    LiveData<HabitEntity> getHabitById(int habitId);
+    Observable<HabitEntity> getHabitById(int habitId);
     Completable updateHabit(int habitId, String title, String details);
 }
 
