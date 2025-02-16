@@ -17,5 +17,5 @@ The Habit Tracker App is an Android application designed to help users track the
 * Room (Database Management). <br />
 * RxJava (Reactive Programming). <br />
 * Dagger-Hilt (Dependency Injection). <br />
-* JUnit & Espresso (Unit Testing). <br />
+* JUnit (Unit Testing). <br />
 * MVVM (Architectural Pattern). <br />
