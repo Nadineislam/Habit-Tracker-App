@@ -6,8 +6,6 @@ import androidx.room.Room;
 
 import com.example.habittrackerapp.data.db.HabitDatabase;
 import com.example.habittrackerapp.data.db.dao.HabitDao;
-import com.example.habittrackerapp.data.repository.HabitRepositoryImpl;
-import com.example.habittrackerapp.domain.repository.HabitRepository;
 
 import javax.inject.Singleton;
 
@@ -20,7 +18,6 @@ import dagger.hilt.components.SingletonComponent;
 @Module
 @InstallIn(SingletonComponent.class)
 public class AppModule {
-
     @Provides
     @Singleton
     public static HabitDatabase provideDatabase(@ApplicationContext Context context) {
@@ -30,15 +27,11 @@ public class AppModule {
     }
 
     @Provides
+    @Singleton
     public static HabitDao provideHabitDao(HabitDatabase db) {
         return db.habitDao();
     }
 
-
-    @Provides
-    public static HabitRepository provideHabitRepository(HabitDao habitDao) {
-        return new HabitRepositoryImpl(habitDao);
-    }
 }
 
 
