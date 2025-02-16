@@ -25,7 +25,7 @@ public class EditHabitDialog extends DialogFragment {
     private FragmentEditHabitBinding binding;
     private EditHabitViewModel editHabitViewModel;
     private final int habitId;
-    private LifecycleOwner lifeCycleOwner;
+    private final LifecycleOwner lifeCycleOwner;
 
     public EditHabitDialog(int habitId, LifecycleOwner lifecycleOwner) {
         this.habitId = habitId;
@@ -67,7 +67,7 @@ public class EditHabitDialog extends DialogFragment {
 
                 case ERROR:
                     binding.progressBar.setVisibility(View.GONE);
-                    Toast.makeText(getContext(), habitResource.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), habitResource.getMessage(), Toast.LENGTH_SHORT).show();
                     break;
             }
         });
