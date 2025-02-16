@@ -21,15 +21,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
 import io.reactivex.CompletableObserver;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 @HiltViewModel
 public class HomeHabitTrackerViewModel extends ViewModel {
     private final HabitRepository habitRepository;
-    private final CompositeDisposable disposable = new CompositeDisposable();
-
     private final MutableLiveData<Resource<Boolean>> _saveProgressLiveData = new MutableLiveData<>();
     public LiveData<Resource<Boolean>> saveProgressLiveData = _saveProgressLiveData;
 
@@ -42,10 +39,10 @@ public class HomeHabitTrackerViewModel extends ViewModel {
     @Inject
     public HomeHabitTrackerViewModel(HabitRepository habitRepository) {
         this.habitRepository = habitRepository;
-        loadHabitByType(HabitType.INCOMPLETE,getCurrentDate());
+        loadHabitByType(HabitType.INCOMPLETE, getCurrentDate());
     }
 
-    public  void loadHabitByType(HabitType type, String date) {
+    public void loadHabitByType(HabitType type, String date) {
         if (type == HabitType.INCOMPLETE) {
             getAllHabitsByDate(date);
         } else {
@@ -57,7 +54,8 @@ public class HomeHabitTrackerViewModel extends ViewModel {
         _getAllHabitsByDate.postValue(Resource.loading());
         habitRepository.getAllHabitsByDate(date).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<List<HabitEntity>>() {
             @Override
-            public void onSubscribe(Disposable d) {}
+            public void onSubscribe(Disposable d) {
+            }
 
             @Override
             public void onNext(List<HabitEntity> habitEntities) {
@@ -70,7 +68,8 @@ public class HomeHabitTrackerViewModel extends ViewModel {
             }
 
             @Override
-            public void onComplete() {}
+            public void onComplete() {
+            }
         });
     }
 
@@ -78,7 +77,8 @@ public class HomeHabitTrackerViewModel extends ViewModel {
         _getCompleteHabitsByDate.postValue(Resource.loading());
         habitRepository.getCompletedHabitsByDate(date).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<List<HabitEntity>>() {
             @Override
-            public void onSubscribe(Disposable d) {}
+            public void onSubscribe(Disposable d) {
+            }
 
             @Override
             public void onNext(List<HabitEntity> habitEntities) {
@@ -91,7 +91,8 @@ public class HomeHabitTrackerViewModel extends ViewModel {
             }
 
             @Override
-            public void onComplete() {}
+            public void onComplete() {
+            }
         });
     }
 
@@ -100,7 +101,8 @@ public class HomeHabitTrackerViewModel extends ViewModel {
         _saveProgressLiveData.postValue(Resource.loading());
         habitRepository.updateHabitProgress(habitId, progress).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CompletableObserver() {
             @Override
-            public void onSubscribe(Disposable d) {}
+            public void onSubscribe(Disposable d) {
+            }
 
             @Override
             public void onComplete() {
@@ -112,12 +114,6 @@ public class HomeHabitTrackerViewModel extends ViewModel {
                 _saveProgressLiveData.postValue(Resource.error(throwable.getMessage(), false));
             }
         });
-    }
-
-    @Override
-    protected void onCleared() {
-        super.onCleared();
-        disposable.clear();
     }
 }
 
