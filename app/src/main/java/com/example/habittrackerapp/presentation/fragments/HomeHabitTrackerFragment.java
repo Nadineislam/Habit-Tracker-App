@@ -11,9 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,21 +19,13 @@ import android.widget.Toast;
 
 import com.example.habittrackerapp.R;
 import com.example.habittrackerapp.core.HabitType;
-import com.example.habittrackerapp.core.Utils;
 import com.example.habittrackerapp.data.entity.HabitEntity;
-import com.example.habittrackerapp.databinding.DialogCalendarBinding;
 import com.example.habittrackerapp.databinding.FragmentHomeHabitTrackerBinding;
 import com.example.habittrackerapp.presentation.adapter.HabitTrackerAdapter;
 import com.example.habittrackerapp.presentation.listeners.OnHabitSwipeListener;
 import com.example.habittrackerapp.presentation.viewmodel.HomeHabitTrackerViewModel;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-
-import com.example.habittrackerapp.core.OnDateSelectedListener;
-
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
@@ -88,14 +78,13 @@ public class HomeHabitTrackerFragment extends Fragment implements OnHabitSwipeLi
                 case SUCCESS: {
                     binding.progressBar.setVisibility(View.GONE);
 
-                    if (resource.getData().isEmpty()) {
+                    if (resource.getData().isEmpty() || resource.getData() == null) {
                         binding.emptyText.setVisibility(View.VISIBLE);
-                    }
-                    habits = resource.getData();
-
-                    if (resource.getData() != null) {
+                    } else {
                         binding.emptyText.setVisibility(View.GONE);
+                        habits = resource.getData();
                         habitAdapter.setHabitProgressMap(resource.getData(), this);
+
                     }
                     break;
                 }
@@ -190,7 +179,7 @@ public class HomeHabitTrackerFragment extends Fragment implements OnHabitSwipeLi
                 oldHabit = habit;
             }
         }
-        if (oldHabit.getProgress() != 100){
+        if (oldHabit.getProgress() != 100) {
             habitViewModel.updateHabitProgress(habitId, progress);
         }
     }
